@@ -1,0 +1,53 @@
+.main-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.todo-list-container {
+  width: 40%;
+}
+
+.start-column {
+  width: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.center-column {
+  width: 80%;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.end-column {
+  width: 15%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: black;
+}
+
+.task-done {
+  text-decoration: line-through;
+}
+
+.black-icon{
+  color: black;
+}
+
+/* CHECKBOX STYLING */
+.mat-checkbox{
+  margin-right: 8px !important;
+}
+
+// Redefine Angular checkbox-checked color
+::ng-deep.mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+  background-color: #3498db;
+}
+// Redefine ripple behavior of checkbox crossing
+::ng-deep.mat-ripple-element {
+  background: #3498db !important;
+}

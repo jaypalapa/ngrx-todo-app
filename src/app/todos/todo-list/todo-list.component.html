@@ -1,0 +1,19 @@
+<div class="main-container">
+  <div class="todo-list-container" *ngIf="allTodos$ | async as todos">
+
+    <!-- Display the complete todolist -->
+    <div class="todo-item" *ngIf="allTodos$ | async as todos">
+      <mat-list>
+        <mat-list-item *ngFor="let todo of todos">
+          <!-- <mat-checkbox class="start-column"></mat-checkbox> -->
+          <h4 class="center-column">{{ todo.title }}</h4>
+          <!-- <mat-icon mat-list-icon class="end-column">edit</mat-icon> -->
+          <mat-divider></mat-divider>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </div>
+
+</div>
+
+
