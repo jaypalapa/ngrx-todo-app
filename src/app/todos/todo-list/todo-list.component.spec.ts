@@ -4,8 +4,9 @@ import {Store, StoreModule} from '@ngrx/store';
 import * as fromRoot from '../../store/reducers';
 import {TodoState} from '../../store/reducers/todo.reducer';
 import * as fromActions from '../../store/actions/todo.actions';
-import {MatDividerModule, MatListModule} from '@angular/material';
+import {MatCheckboxModule, MatDividerModule, MatListModule} from '@angular/material';
 import {Todo} from '../../model/todo';
+import {Update} from '@ngrx/entity';
 
 describe('TodoListComponent', () => {
 
@@ -16,6 +17,7 @@ describe('TodoListComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
+        MatCheckboxModule,
         MatDividerModule,
         MatListModule,
         StoreModule.forRoot({
@@ -55,7 +57,21 @@ describe('TodoListComponent', () => {
     component.allTodos$.subscribe(todos => {
       expect(todos.length).toBe(items.length);
     });
+  });
 
+  it('should dispatch the onToggle todo when onToggleTodo is called', () => {
+    // Fake initialized to do with false state
+    const initTodo: Todo = {id: 1, done: false, title: 'firstTodo'};
+    // Update to do state with a true state and create an Update To do typed object
+    const updatedTodoState: Update<Todo> = {
+      id: initTodo.id,
+      changes: { done: !initTodo.done }
+    };
+    const action = new fromActions.ToggleCompleteTodo(updatedTodoState);
+
+    component.onToggleTodo(initTodo);
+
+    expect(store.dispatch).toHaveBeenCalledWith(action);
   });
 
 });

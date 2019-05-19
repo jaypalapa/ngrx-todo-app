@@ -1,10 +1,12 @@
 import {Action} from '@ngrx/store';
 import {Todo} from '../../model/todo';
+import {Update} from '@ngrx/entity';
 
 export enum TodoActionTypes {
   LoadAllTodos = '[Todo] Load All Todos',
   LoadAllTodosSuccess = '[Todo] Load All Todos Success',
   LoadAllTodosFail = '[Todo] Load All Todos Fail',
+  ToggleCompleteTodo = '[Todo] Toggle Complete Todo',
 }
 
 export class LoadAllTodos implements Action {
@@ -24,4 +26,10 @@ export class LoadAllTodosFail implements Action {
   constructor(public payload: any) {}
 }
 
-export type TodoActions = LoadAllTodos | LoadAllTodosSuccess | LoadAllTodosFail;
+export class ToggleCompleteTodo implements Action {
+  public readonly type = TodoActionTypes.ToggleCompleteTodo;
+
+  constructor(public todo: Update<Todo>) {}
+}
+
+export type TodoActions = LoadAllTodos | LoadAllTodosSuccess | LoadAllTodosFail | ToggleCompleteTodo;

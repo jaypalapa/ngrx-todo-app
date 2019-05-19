@@ -5,8 +5,8 @@
     <div class="todo-item" *ngIf="allTodos$ | async as todos">
       <mat-list>
         <mat-list-item *ngFor="let todo of todos">
-          <!-- <mat-checkbox class="start-column"></mat-checkbox> -->
-          <h4 class="center-column">{{ todo.title }}</h4>
+          <mat-checkbox (change)="onToggleTodo(todo)" [checked]="todo.done" class="start-column"></mat-checkbox>
+          <h4 [ngClass]="todo.done ? 'task-done' : 'taskTodo'" class="center-column">{{ todo.title }}</h4>
           <!-- <mat-icon mat-list-icon class="end-column">edit</mat-icon> -->
           <mat-divider></mat-divider>
         </mat-list-item>
@@ -15,5 +15,3 @@
   </div>
 
 </div>
-
-

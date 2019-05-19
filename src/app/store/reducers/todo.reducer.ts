@@ -9,10 +9,15 @@ export interface TodoState extends EntityState<Todo> {
   selectedTodoId: string | number | null;
 }
 
+// Sort todos by state (done/undone), if state is equal, then it will sort by id
+export function sortToggledTodos(a: Todo, b: Todo): number {
+  return Number(a.done) - Number(b.done) || a.id - b.id;
+}
+
 // Adapter of the above Entity state
 export const adapter: EntityAdapter<Todo> = createEntityAdapter<Todo>({
   selectId: (todo: Todo) => todo.id,
-  sortComparer: false
+  sortComparer: sortToggledTodos
 });
 
 // Define the initial state of TodoEntityState
@@ -40,6 +45,10 @@ export function reducer(state = initialState, action: fromActions.TodoActions) {
         loaded: true
       });
     }
+
+    case fromActions.TodoActionTypes.ToggleCompleteTodo: {
+      return adapter.updateOne(action.todo, state);
+      }
 
     default: {
       return state;
