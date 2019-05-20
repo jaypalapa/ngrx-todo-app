@@ -1,0 +1,21 @@
+<div class="main-container">
+  <div class="todo-detail-container">
+
+    <div class="todo-item">
+      <mat-list *ngIf="selectedTodo$ | async as selectedTodo">
+        <mat-list-item>
+          <mat-icon mat-list-icon class="black-mat-icon">title</mat-icon>
+          <p>{{ selectedTodo.title }}</p>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item>
+          <mat-icon mat-list-icon class="black-mat-icon" *ngIf="selectedTodo.description">description</mat-icon>
+          <p>{{ selectedTodo.description }}</p>
+        </mat-list-item>
+      </mat-list>
+
+    </div>
+    <button mat-raised-button [routerLink]="['/todos']">Back</button>
+  </div>
+
+</div>

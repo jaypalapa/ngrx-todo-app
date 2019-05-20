@@ -4,7 +4,7 @@
   justify-content: center;
 }
 
-.todo-list-container {
+.todo-detail-container {
   width: 40%;
 }
 
@@ -28,10 +28,15 @@
   flex-direction: column;
   justify-content: flex-end;
   color: black;
+
+  mat-icon {
+    cursor: pointer;
+  }
 }
 
-.black-mat-icon{
-  color: black;
+.mat-raised-button {
+  display: block !important;
+  margin: 30px auto !important;
 }
 
 .task-done {

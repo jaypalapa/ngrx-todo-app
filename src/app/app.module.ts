@@ -12,15 +12,26 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {AppRoutingModule} from './app-routing.module';
 import {HttpClientModule} from '@angular/common/http';
 import {InMemoryMock} from './mock/in-memory-mock';
-import {MatCardModule, MatCheckboxModule, MatDividerModule, MatExpansionModule, MatIconModule, MatListModule} from '@angular/material';
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatCheckboxModule,
+  MatDividerModule,
+  MatExpansionModule,
+  MatIconModule,
+  MatListModule
+} from '@angular/material';
 import {InMemoryWebApiModule} from 'angular-in-memory-web-api';
 import {reducers} from './store/reducers';
 import {TodoEffects} from './store/effects/todo.effects';
+import {TodoDetailComponent} from './todos/todo-detail/todo-detail.component';
+import {TodosGuard} from './todos/todos.guard';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TodoListComponent
+    TodoListComponent,
+    TodoDetailComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,6 +39,7 @@ import {TodoEffects} from './store/effects/todo.effects';
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
+    MatButtonModule,
     MatCardModule,
     MatCheckboxModule,
     MatExpansionModule,
@@ -42,7 +54,10 @@ import {TodoEffects} from './store/effects/todo.effects';
       maxAge: 25
     })
   ],
-  providers: [TodoService],
+  providers: [
+    TodoService,
+    TodosGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

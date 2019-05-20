@@ -5,9 +5,13 @@
     <div class="todo-item" *ngIf="allTodos$ | async as todos">
       <mat-list>
         <mat-list-item *ngFor="let todo of todos">
+          <!-- Checkboxes-->
           <mat-checkbox (change)="onToggleTodo(todo)" [checked]="todo.done" class="start-column"></mat-checkbox>
+          <!-- TODOs Titles -->
           <h4 [ngClass]="todo.done ? 'task-done' : 'taskTodo'" class="center-column">{{ todo.title }}</h4>
-          <!-- <mat-icon mat-list-icon class="end-column">edit</mat-icon> -->
+          <!-- ICONS -->
+          <!-- Detail a To-do -->
+          <a href="" [routerLink]="['/todoDetail', todo.id]"><mat-icon class="black-mat-icon">description</mat-icon></a>
           <mat-divider></mat-divider>
         </mat-list-item>
       </mat-list>

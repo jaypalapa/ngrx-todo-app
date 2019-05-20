@@ -10,7 +10,8 @@ import {Todo} from '../../model/todo';
 @Injectable()
 export class TodoEffects {
 
-  constructor(private actions$: Actions, private todoService: TodoService) {}
+  constructor(private actions$: Actions,
+              private todoService: TodoService) {}
 
   @Effect()
   loadAllTodos$: Observable<Action> = this.actions$.pipe(
@@ -21,7 +22,5 @@ export class TodoEffects {
       )
     )
   );
-
-
 
 }

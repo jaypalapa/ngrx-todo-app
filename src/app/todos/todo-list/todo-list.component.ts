@@ -1,11 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Todo} from '../../model/todo';
-import {Store} from '@ngrx/store';
+import {select, Store} from '@ngrx/store';
 import * as fromActions from '../../store/actions/todo.actions';
+import * as fromReducer from '../../store/reducers';
 import {TodoState} from '../../store/reducers/todo.reducer';
 import {selectAllTodos} from '../../store/reducers';
 import {Update} from '@ngrx/entity';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-todo-list',
@@ -19,12 +21,19 @@ export class TodoListComponent implements OnInit {
 
   // Populate allTodos$ value with mocked todos from the store
   constructor(private store: Store<TodoState>) {
-    this.allTodos$ = this.store.select(selectAllTodos);
+    this.allTodos$ = this.store.pipe(select(selectAllTodos));
   }
 
-  // Dispatch the action in charge of loading all todos on init
+  // Retrieve all todos with a 'loaded' state. If present, means that store is already initialized
+  // So don't need to retrieve them all because it will cause a store reinitialization onInit of this component
   ngOnInit() {
-    this.store.dispatch(new fromActions.LoadAllTodos());
+    this.store.pipe(
+      select(fromReducer.selectLoadedTodos),
+      take(1))
+      .subscribe((hasLoaded: boolean) => {
+        if (!hasLoaded) { this.store.dispatch(new fromActions.LoadAllTodos()); }
+        }
+      );
   }
 
   /**

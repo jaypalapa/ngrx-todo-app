@@ -32,7 +32,7 @@ export function reducer(state = initialState, action: fromActions.TodoActions) {
   switch (action.type) {
 
     case fromActions.TodoActionTypes.LoadAllTodos: {
-      return adapter.getInitialState({
+      return ({
         ...state,
         loading: true
       });
@@ -46,9 +46,22 @@ export function reducer(state = initialState, action: fromActions.TodoActions) {
       });
     }
 
+    case fromActions.TodoActionTypes.LoadAllTodosFail: {
+      return {
+        ...state,
+        loading: false,
+        loaded: false
+      };
+    }
+
     case fromActions.TodoActionTypes.ToggleCompleteTodo: {
       return adapter.updateOne(action.todo, state);
-      }
+    }
+
+    case fromActions.TodoActionTypes.LoadTodoById: {
+      return { ...state, selectedTodoId: action.todoId };
+    }
+
 
     default: {
       return state;
@@ -56,11 +69,11 @@ export function reducer(state = initialState, action: fromActions.TodoActions) {
   }
 }
 
+export const getSelectedTodoId = (state: TodoState) => state.selectedTodoId;
+
 // get the selectors
 export const {
-  selectIds: selectTodoIds,
   selectEntities: selectTodosEntities,
-  selectAll: selectAllTodos,
-  selectTotal: todosCount
+  selectAll: selectAllTodos
 } = adapter.getSelectors();
 
