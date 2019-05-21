@@ -8,6 +8,7 @@ export enum TodoActionTypes {
   LoadAllTodosFail = '[Todo] Load All Todos Fail',
   ToggleCompleteTodo = '[Todo] Toggle Complete Todo',
   LoadTodoById = '[Todo] Load Todo By Id',
+  AddTodo = '[Todo] Add Todo',
 }
 
 export class LoadAllTodos implements Action {
@@ -34,4 +35,9 @@ export class LoadTodoById implements Action {
   constructor(public todoId: number) {}
 }
 
-export type TodoActions = LoadAllTodos | LoadAllTodosSuccess | LoadAllTodosFail | ToggleCompleteTodo | LoadTodoById;
+export class AddTodo implements Action {
+  public readonly type = TodoActionTypes.AddTodo;
+  constructor(public todo: Todo) {}
+}
+
+export type TodoActions = LoadAllTodos | LoadAllTodosSuccess | LoadAllTodosFail | ToggleCompleteTodo | LoadTodoById | AddTodo;

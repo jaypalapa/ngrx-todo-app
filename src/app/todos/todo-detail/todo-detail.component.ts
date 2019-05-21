@@ -20,11 +20,9 @@ export class TodoDetailComponent implements OnInit {
   constructor(private store: Store<TodoState>, private route: ActivatedRoute) {
     const id = +this.route.snapshot.paramMap.get('id');
     this.store.dispatch(new fromActions.LoadTodoById(id));
-
   }
 
   ngOnInit() {
-
     this.selectedTodo$ = this.store.select(fromReducer.selectCurrentTodo);
   }
 }

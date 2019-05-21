@@ -8,6 +8,8 @@ import {TodoState} from '../../store/reducers/todo.reducer';
 import {selectAllTodos} from '../../store/reducers';
 import {Update} from '@ngrx/entity';
 import {take} from 'rxjs/operators';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AddTodo} from '../../store/actions/todo.actions';
 
 @Component({
   selector: 'app-todo-list',
@@ -18,10 +20,19 @@ import {take} from 'rxjs/operators';
 export class TodoListComponent implements OnInit {
 
   allTodos$: Observable<Todo[]>;
+  newTodoForm: FormGroup;
+  titleFormCtrl: FormControl;
 
   // Populate allTodos$ value with mocked todos from the store
-  constructor(private store: Store<TodoState>) {
+  constructor(private store: Store<TodoState>, public fb: FormBuilder) {
     this.allTodos$ = this.store.pipe(select(selectAllTodos));
+
+    this.titleFormCtrl = fb.control('', Validators.required);
+
+    this.newTodoForm = fb.group({
+      title: this.titleFormCtrl,
+      description: fb.control('')
+    });
   }
 
   // Retrieve all todos with a 'loaded' state. If present, means that store is already initialized
@@ -50,6 +61,27 @@ export class TodoListComponent implements OnInit {
     };
 
     this.store.dispatch(new fromActions.ToggleCompleteTodo(todoUpdate));
+  }
+
+  /**
+   * This method creates a TodoObject with the input values from form and dispatch action by
+   * @param title
+   * @param description
+   */
+  addTodo(title: string, description?: string): void {
+  title = title.trim();
+  if (description) { description = description.trim(); }
+
+  const todo: Todo = {
+    id: new Date().valueOf(),
+    done: false,
+    title,
+    description
+  };
+
+  // Dispatch action to add the to-do in store
+  this.store.dispatch(new AddTodo(todo));
+
   }
 
 }

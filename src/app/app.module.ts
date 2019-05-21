@@ -17,8 +17,8 @@ import {
   MatCardModule,
   MatCheckboxModule,
   MatDividerModule,
-  MatExpansionModule,
-  MatIconModule,
+  MatExpansionModule, MatFormFieldModule,
+  MatIconModule, MatInputModule,
   MatListModule
 } from '@angular/material';
 import {InMemoryWebApiModule} from 'angular-in-memory-web-api';
@@ -39,10 +39,13 @@ import {TodosGuard} from './todos/todos.guard';
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
+    MatExpansionModule,
     MatButtonModule,
     MatCardModule,
     MatCheckboxModule,
     MatExpansionModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatIconModule,
     MatDividerModule,
     MatListModule,

@@ -67,13 +67,29 @@ describe('Reducer Full Tests', () => {
   });
 
   describe('TodoReducer - LoadTodoById Action', () => {
-    it('should change the bode property for a given todo id', () => {
+    it('should change the selectedTodoId property for a given todo id', () => {
       const { initialState } = fromReducer;
       const action = new fromActions.LoadTodoById(1);
       const state = reducers.todos(initialState, action);
 
-      // Ensure reducer change loaded & loading properties
       expect(state.selectedTodoId).toEqual(1);
+    });
+  });
+
+  describe('TodoReducer - AddTodo Action', () => {
+    it('should get additional entities and ids properties created by addOne() adapter method', () => {
+      const fakeTodo: Todo = {id: 1, done: true, title: 'fake Todo 1', description: 'fake description 1'};
+      const { initialState } = fromReducer;
+      const action = new fromActions.AddTodo(fakeTodo);
+      const state = reducers.todos(initialState, action);
+
+      expect(state).toEqual({
+        ...initialState,
+        entities: {
+          [fakeTodo.id]: fakeTodo
+        },
+        ids: [fakeTodo.id]
+      });
     });
   });
 

@@ -1,6 +1,36 @@
 <div class="main-container">
   <div class="todo-list-container" *ngIf="allTodos$ | async as todos">
 
+    <!-- FORM for New to-do creation -->
+      <div [formGroup]="newTodoForm">
+        <mat-accordion>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon mat-list-icon class="black-mat-icon">add</mat-icon>
+              </mat-panel-title>
+              <mat-panel-description>
+                Add a new todo
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <mat-form-field>
+              <input matInput #title matInput autocomplete="off" required placeholder="Title" formControlName="title">
+            </mat-form-field>
+
+            <mat-form-field>
+              <input #description matInput autocomplete="off" placeholder="Description (optional)" formControlName="description">
+            </mat-form-field>
+
+            <mat-action-row>
+              <button mat-button color="primary" type="submit"
+                      (click)="addTodo(title.value, description.value); newTodoForm.reset()"
+                      [disabled]="newTodoForm.invalid">Create Todo</button>
+            </mat-action-row>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+
     <!-- Display the complete todolist -->
     <div class="todo-item" *ngIf="allTodos$ | async as todos">
       <mat-list>
@@ -11,11 +41,10 @@
           <h4 [ngClass]="todo.done ? 'task-done' : 'taskTodo'" class="center-column">{{ todo.title }}</h4>
           <!-- ICONS -->
           <!-- Detail a To-do -->
-          <a href="" [routerLink]="['/todoDetail', todo.id]"><mat-icon class="black-mat-icon">description</mat-icon></a>
+          <a href="" [routerLink]="['/todoDetail', todo.id]"><mat-icon class="black-mat-icon">pageview</mat-icon></a>
           <mat-divider></mat-divider>
         </mat-list-item>
       </mat-list>
     </div>
   </div>
-
 </div>
