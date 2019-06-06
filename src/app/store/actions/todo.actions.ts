@@ -9,6 +9,7 @@ export enum TodoActionTypes {
   ToggleCompleteTodo = '[Todo] Toggle Complete Todo',
   LoadTodoById = '[Todo] Load Todo By Id',
   AddTodo = '[Todo] Add Todo',
+  UpdateTodo = '[Todo] Update Todo',
 }
 
 export class LoadAllTodos implements Action {
@@ -40,4 +41,10 @@ export class AddTodo implements Action {
   constructor(public todo: Todo) {}
 }
 
-export type TodoActions = LoadAllTodos | LoadAllTodosSuccess | LoadAllTodosFail | ToggleCompleteTodo | LoadTodoById | AddTodo;
+export class UpdateTodo implements Action {
+  public readonly type = TodoActionTypes.UpdateTodo;
+  constructor(public todo: Update<Todo>) {}
+}
+
+export type TodoActions = LoadAllTodos | LoadAllTodosSuccess | LoadAllTodosFail
+                          | ToggleCompleteTodo | LoadTodoById | AddTodo | UpdateTodo;

@@ -19,19 +19,21 @@ import {
   MatDividerModule,
   MatExpansionModule, MatFormFieldModule,
   MatIconModule, MatInputModule,
-  MatListModule
+  MatListModule, MatSnackBarModule
 } from '@angular/material';
 import {InMemoryWebApiModule} from 'angular-in-memory-web-api';
 import {reducers} from './store/reducers';
 import {TodoEffects} from './store/effects/todo.effects';
 import {TodoDetailComponent} from './todos/todo-detail/todo-detail.component';
 import {TodosGuard} from './todos/todos.guard';
+import { TodoEditComponent } from './todos/todo-edit/todo-edit.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TodoListComponent,
     TodoDetailComponent,
+    TodoEditComponent
   ],
   imports: [
     BrowserModule,
@@ -49,6 +51,7 @@ import {TodosGuard} from './todos/todos.guard';
     MatIconModule,
     MatDividerModule,
     MatListModule,
+    MatSnackBarModule,
     ReactiveFormsModule,
     InMemoryWebApiModule.forRoot(InMemoryMock),
     StoreModule.forRoot(reducers),

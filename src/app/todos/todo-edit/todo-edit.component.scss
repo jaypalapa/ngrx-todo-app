@@ -1,0 +1,22 @@
+.main-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.todo-edit-container {
+  width: 40%;
+
+  mat-form-field{
+    width: 100%;
+  }
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.mat-raised-button {
+  margin: 30px 10px !important;
+}

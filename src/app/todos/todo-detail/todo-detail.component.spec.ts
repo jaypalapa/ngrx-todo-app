@@ -11,6 +11,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {TodoDetailComponent} from '../todo-detail/todo-detail.component';
 import {NO_ERRORS_SCHEMA} from '@angular/core';
 import {AppRoutingModule} from '../../app-routing.module';
+import {TodoEditComponent} from '../todo-edit/todo-edit.component';
 
 describe('TodoDetailComponent', () => {
 
@@ -36,6 +37,7 @@ describe('TodoDetailComponent', () => {
       ],
       declarations: [
         TodoListComponent,
+        TodoEditComponent,
         TodoDetailComponent
       ],
       schemas: [NO_ERRORS_SCHEMA]

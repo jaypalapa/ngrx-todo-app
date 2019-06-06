@@ -1,5 +1,13 @@
 import * as fromActions from '../actions/todo.actions';
-import {AddTodo, LoadAllTodos, LoadAllTodosFail, LoadAllTodosSuccess, LoadTodoById, ToggleCompleteTodo} from '../actions/todo.actions';
+import {
+  AddTodo,
+  LoadAllTodos,
+  LoadAllTodosFail,
+  LoadAllTodosSuccess,
+  LoadTodoById,
+  ToggleCompleteTodo,
+  UpdateTodo
+} from '../actions/todo.actions';
 import {Todo} from '../../model/todo';
 import {Update} from '@ngrx/entity';
 
@@ -77,6 +85,20 @@ describe('Actions Full Tests', () => {
       expect({...action}).toEqual({
         type: fromActions.TodoActionTypes.AddTodo,
         todo: payload,
+      });
+    });
+
+  });
+
+
+  describe('UpdateTodo', () => {
+    it('should create an action', () => {
+      const updatedTodo: Update<Todo> = {id: 1, changes: {title: 'new title', description: 'new description'}};
+      const action = new UpdateTodo(updatedTodo);
+
+      expect({...action}).toEqual({
+        type: fromActions.TodoActionTypes.UpdateTodo,
+        todo: updatedTodo,
       });
     });
 

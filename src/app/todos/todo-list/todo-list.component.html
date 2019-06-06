@@ -40,8 +40,10 @@
           <!-- TODOs Titles -->
           <h4 [ngClass]="todo.done ? 'task-done' : 'taskTodo'" class="center-column">{{ todo.title }}</h4>
           <!-- ICONS -->
-          <!-- Detail a To-do -->
+          <!-- DETAIL a To-do -->
           <a href="" [routerLink]="['/todoDetail', todo.id]"><mat-icon class="black-mat-icon">pageview</mat-icon></a>
+          <!-- EDIT a to-do -->
+          <a href="" [routerLink]="['/todoEdit', todo.id]"><mat-icon class="black-mat-icon">edit</mat-icon></a>
           <mat-divider></mat-divider>
         </mat-list-item>
       </mat-list>

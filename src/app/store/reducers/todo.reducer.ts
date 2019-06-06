@@ -66,6 +66,10 @@ export function reducer(state = initialState, action: fromActions.TodoActions) {
       return adapter.addOne(action.todo, state);
     }
 
+    case fromActions.TodoActionTypes.UpdateTodo: {
+      return adapter.updateOne(action.todo, state);
+    }
+
     default: {
       return state;
     }
