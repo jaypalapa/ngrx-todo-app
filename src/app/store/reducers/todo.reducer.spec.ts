@@ -94,7 +94,7 @@ describe('Reducer Full Tests', () => {
   });
 
   describe('TodoReducer - UpdateTodo Action', () => {
-    it('should get additional entities and ids properties created by addOne() adapter method', () => {
+    it('should update entities properties by calling updateOne() adapter method', () => {
       const fakeTodo: Todo = {id: 1, done: true, title: 'fake Todo 1', description: 'fake description 1'};
       const { initialState } = fromReducer;
       // Invoke reducer by providing the initial state and a new AddTodo action
@@ -129,4 +129,16 @@ describe('Reducer Full Tests', () => {
     });
   });
 
+  describe('TodoReducer - DeleteTodo Action', () => {
+    it('should delete entities and ids properties by calling removeOne() adapter method', () => {
+      const fakeTodo: Todo = {id: 1, done: true, title: 'fake Todo 1', description: 'fake description 1'};
+      const {initialState} = fromReducer;
+      const state = reducers.todos(initialState, new fromActions.DeleteTodo(fakeTodo));
+      expect(state).toEqual({
+        ...initialState,
+        entities: {},
+        ids: []
+      });
+    });
+  });
 });

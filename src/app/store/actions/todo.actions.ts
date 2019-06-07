@@ -10,6 +10,7 @@ export enum TodoActionTypes {
   LoadTodoById = '[Todo] Load Todo By Id',
   AddTodo = '[Todo] Add Todo',
   UpdateTodo = '[Todo] Update Todo',
+  DeleteTodo = '[Todo] Delete Todo',
 }
 
 export class LoadAllTodos implements Action {
@@ -46,5 +47,11 @@ export class UpdateTodo implements Action {
   constructor(public todo: Update<Todo>) {}
 }
 
+export class DeleteTodo implements Action {
+  public readonly type = TodoActionTypes.DeleteTodo;
+  constructor(public todo: Todo) {}
+}
+
 export type TodoActions = LoadAllTodos | LoadAllTodosSuccess | LoadAllTodosFail
-                          | ToggleCompleteTodo | LoadTodoById | AddTodo | UpdateTodo;
+                          | ToggleCompleteTodo | LoadTodoById | AddTodo | UpdateTodo
+                          | DeleteTodo;

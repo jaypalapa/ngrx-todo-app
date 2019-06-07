@@ -70,6 +70,10 @@ export function reducer(state = initialState, action: fromActions.TodoActions) {
       return adapter.updateOne(action.todo, state);
     }
 
+    case fromActions.TodoActionTypes.DeleteTodo: {
+      return adapter.removeOne(action.todo.id, state);
+    }
+
     default: {
       return state;
     }

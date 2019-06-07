@@ -10,6 +10,8 @@ import {Update} from '@ngrx/entity';
 import {take} from 'rxjs/operators';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AddTodo} from '../../store/actions/todo.actions';
+import {MatDialog} from '@angular/material';
+import {TodoDeleteComponent} from '../todo-delete/todo-delete.component';
 
 @Component({
   selector: 'app-todo-list',
@@ -24,7 +26,9 @@ export class TodoListComponent implements OnInit {
   titleFormCtrl: FormControl;
 
   // Populate allTodos$ value with mocked todos from the store
-  constructor(private store: Store<TodoState>, public fb: FormBuilder) {
+  constructor(private store: Store<TodoState>,
+              public fb: FormBuilder,
+              public dialog: MatDialog) {
     this.allTodos$ = this.store.pipe(select(selectAllTodos));
 
     this.titleFormCtrl = fb.control('', Validators.required);
@@ -84,4 +88,15 @@ export class TodoListComponent implements OnInit {
 
   }
 
+  /**
+   *
+   * @param todo
+   */
+  deleteTodo(todo: Todo): void {
+    const dialogRef = this.dialog.open(TodoDeleteComponent, {
+      width: '40%',
+      data: { todo },
+      autoFocus: false
+    });
+  }
 }

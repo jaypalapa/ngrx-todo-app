@@ -34,6 +34,12 @@
     <!-- Display the complete todolist -->
     <div class="todo-item" *ngIf="allTodos$ | async as todos">
       <mat-list>
+      <mat-list-item class="todo-item" *ngIf="todos.length === 0">
+        <mat-icon class="start-column">announcement</mat-icon>
+        <h4 class="center-column">Your todo list is currently empty, please add one !</h4>
+      </mat-list-item>
+      </mat-list>
+      <mat-list>
         <mat-list-item *ngFor="let todo of todos">
           <!-- Checkboxes-->
           <mat-checkbox (change)="onToggleTodo(todo)" [checked]="todo.done" class="start-column"></mat-checkbox>
@@ -41,9 +47,11 @@
           <h4 [ngClass]="todo.done ? 'task-done' : 'taskTodo'" class="center-column">{{ todo.title }}</h4>
           <!-- ICONS -->
           <!-- DETAIL a To-do -->
-          <a href="" [routerLink]="['/todoDetail', todo.id]"><mat-icon class="black-mat-icon">pageview</mat-icon></a>
+          <button mat-icon-button [routerLink]="['/todoDetail', todo.id]"><mat-icon class="black-mat-icon">pageview</mat-icon></button>
           <!-- EDIT a to-do -->
-          <a href="" [routerLink]="['/todoEdit', todo.id]"><mat-icon class="black-mat-icon">edit</mat-icon></a>
+          <button mat-icon-button [routerLink]="['/todoEdit', todo.id]"><mat-icon class="black-mat-icon">edit</mat-icon></button>
+          <!-- DELETE a to-do -->
+          <button mat-icon-button (click)="deleteTodo(todo)"><mat-icon class="black-mat-icon">delete_forever</mat-icon></button>
           <mat-divider></mat-divider>
         </mat-list-item>
       </mat-list>

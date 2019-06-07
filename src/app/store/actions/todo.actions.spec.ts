@@ -1,6 +1,6 @@
 import * as fromActions from '../actions/todo.actions';
 import {
-  AddTodo,
+  AddTodo, DeleteTodo,
   LoadAllTodos,
   LoadAllTodosFail,
   LoadAllTodosSuccess,
@@ -74,7 +74,6 @@ describe('Actions Full Tests', () => {
         todoId: payload.id,
       });
     });
-
   });
 
   describe('AddTodo', () => {
@@ -87,9 +86,7 @@ describe('Actions Full Tests', () => {
         todo: payload,
       });
     });
-
   });
-
 
   describe('UpdateTodo', () => {
     it('should create an action', () => {
@@ -101,7 +98,18 @@ describe('Actions Full Tests', () => {
         todo: updatedTodo,
       });
     });
+  });
 
+  describe('DeleteTodo', () => {
+    it('should create an action', () => {
+      const deletedTodo: Todo = {id: 1, title: 'new title', description: 'new description', done: false};
+      const action = new DeleteTodo(deletedTodo);
+
+      expect({...action}).toEqual({
+        type: fromActions.TodoActionTypes.DeleteTodo,
+        todo: deletedTodo,
+      });
+    });
   });
 
 });

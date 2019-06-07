@@ -15,7 +15,7 @@ import {InMemoryMock} from './mock/in-memory-mock';
 import {
   MatButtonModule,
   MatCardModule,
-  MatCheckboxModule,
+  MatCheckboxModule, MatDialogModule,
   MatDividerModule,
   MatExpansionModule, MatFormFieldModule,
   MatIconModule, MatInputModule,
@@ -27,13 +27,15 @@ import {TodoEffects} from './store/effects/todo.effects';
 import {TodoDetailComponent} from './todos/todo-detail/todo-detail.component';
 import {TodosGuard} from './todos/todos.guard';
 import { TodoEditComponent } from './todos/todo-edit/todo-edit.component';
+import { TodoDeleteComponent } from './todos/todo-delete/todo-delete.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TodoListComponent,
     TodoDetailComponent,
-    TodoEditComponent
+    TodoEditComponent,
+    TodoDeleteComponent
   ],
   imports: [
     BrowserModule,
@@ -45,6 +47,7 @@ import { TodoEditComponent } from './todos/todo-edit/todo-edit.component';
     MatButtonModule,
     MatCardModule,
     MatCheckboxModule,
+    MatDialogModule,
     MatExpansionModule,
     MatFormFieldModule,
     MatInputModule,
@@ -64,6 +67,7 @@ import { TodoEditComponent } from './todos/todo-edit/todo-edit.component';
     TodoService,
     TodosGuard
   ],
+  entryComponents: [TodoDeleteComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

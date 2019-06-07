@@ -15,3 +15,5 @@ body {
   color: black;
 }
 
+// Disable the circle focus on the mat-button's dialog caller after dialog have been closed
+.mat-button-focus-overlay { background-color: transparent!important; }

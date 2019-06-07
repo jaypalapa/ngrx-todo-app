@@ -4,7 +4,7 @@ import {Store, StoreModule} from '@ngrx/store';
 import * as fromRoot from '../../store/reducers';
 import {TodoState} from '../../store/reducers/todo.reducer';
 import * as fromActions from '../../store/actions/todo.actions';
-import {MatCheckboxModule, MatDividerModule, MatIconModule, MatListModule} from '@angular/material';
+import {MatCheckboxModule, MatDialogModule, MatDividerModule, MatIconModule, MatListModule} from '@angular/material';
 import {Todo} from '../../model/todo';
 import {Update} from '@ngrx/entity';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -25,6 +25,7 @@ describe('TodoListComponent', () => {
         BrowserModule,
         CommonModule,
         MatCheckboxModule,
+        MatDialogModule,
         MatDividerModule,
         MatListModule,
         MatIconModule,
