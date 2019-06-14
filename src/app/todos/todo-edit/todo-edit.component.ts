@@ -58,8 +58,8 @@ export class TodoEditComponent implements OnInit {
 
   /**
    * Update a specific To-do by giving the user the opportunity to modify title and/or description
-   * @param title
-   * @param description
+   * @param title: The title of the todo
+   * @param description: Details about the todo
    */
   onSubmit(): void {
     let updatedTodo: Update<Todo>;
@@ -92,7 +92,6 @@ export class TodoEditComponent implements OnInit {
     this.router.navigate(['/todos']);
 
     // Open snackbar to inform that to-do has been updated
-    // todo : Handle error cases when backend will be plug
     this.snackBar.open('Todo updated successfully !', '', {
       duration: 3000,
       panelClass: ['custom-snackbar-success']

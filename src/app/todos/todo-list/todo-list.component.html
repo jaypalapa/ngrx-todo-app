@@ -1,50 +1,46 @@
 <div class="main-container">
   <div class="todo-list-container" *ngIf="allTodos$ | async as todos">
-
     <!-- FORM for New to-do creation -->
-      <div [formGroup]="newTodoForm">
-        <mat-accordion>
-          <mat-expansion-panel>
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                <mat-icon mat-list-icon class="black-mat-icon">add</mat-icon>
-              </mat-panel-title>
-              <mat-panel-description>
-                Add a new todo
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-
+      <div class="" [formGroup]="newTodoForm">
+        <mat-list>
+          <mat-list-item>
             <mat-form-field>
               <input matInput #title matInput autocomplete="off" required placeholder="Title" formControlName="title">
+              <mat-hint>Type in the title of your todo</mat-hint>
             </mat-form-field>
 
             <mat-form-field>
-              <input #description matInput autocomplete="off" placeholder="Description (optional)" formControlName="description">
+              <input #description matInput autocomplete="off" placeholder="Description" formControlName="description">
+              <mat-hint>Add details in this optional field</mat-hint>
             </mat-form-field>
 
-            <mat-action-row>
-              <button mat-button color="primary" type="submit"
-                      (click)="addTodo(title.value, description.value); newTodoForm.reset()"
-                      [disabled]="newTodoForm.invalid">Create Todo</button>
-            </mat-action-row>
-          </mat-expansion-panel>
-        </mat-accordion>
+            <button mat-mini-fab color="primary" type="submit"
+                    (click)="addTodo(title.value, description.value); newTodoForm.reset()"
+                    [disabled]="newTodoForm.invalid">
+              <mat-icon>add</mat-icon>
+            </button>
+          </mat-list-item>
+        </mat-list>
       </div>
 
     <!-- Display the complete todolist -->
     <div class="todo-item" *ngIf="allTodos$ | async as todos">
-      <mat-list>
-      <mat-list-item class="todo-item" *ngIf="todos.length === 0">
-        <mat-icon class="start-column">announcement</mat-icon>
-        <h4 class="center-column">Your todo list is currently empty, please add one !</h4>
-      </mat-list-item>
+      <mat-spinner *ngIf="!allLoaded"></mat-spinner>
+      <!-- If todolist is empty, display a custom message -->
+      <mat-list class="todo-item" *ngIf="todos.length === 0 && allLoaded">
+        <mat-list-item>
+          <mat-icon class="start-column">priority_high</mat-icon>
+          <h4 class="center-column">Your todo list is currently empty</h4>
+        </mat-list-item>
       </mat-list>
       <mat-list>
-        <mat-list-item *ngFor="let todo of todos">
+        <mat-list-item *ngFor="let todo of todos; let last = last">
           <!-- Checkboxes-->
           <mat-checkbox (change)="onToggleTodo(todo)" [checked]="todo.done" class="start-column"></mat-checkbox>
-          <!-- TODOs Titles -->
-          <h4 [ngClass]="todo.done ? 'task-done' : 'taskTodo'" class="center-column">{{ todo.title }}</h4>
+          <!-- TODOs Titles : Truncate title string to 40 characters for friendly display purpose -->
+          <h4 [ngClass]="todo.done ? 'task-done' : 'taskTodo'" class="center-column">
+            {{ (todo.title.length>40) ? (todo.title | slice:0:40)+'...' : (todo.title) }}
+          </h4>
           <!-- ICONS -->
           <!-- DETAIL a To-do -->
           <button mat-icon-button [routerLink]="['/todoDetail', todo.id]"><mat-icon class="black-mat-icon">pageview</mat-icon></button>
@@ -52,9 +48,41 @@
           <button mat-icon-button [routerLink]="['/todoEdit', todo.id]"><mat-icon class="black-mat-icon">edit</mat-icon></button>
           <!-- DELETE a to-do -->
           <button mat-icon-button (click)="deleteTodo(todo)"><mat-icon class="black-mat-icon">delete_forever</mat-icon></button>
-          <mat-divider></mat-divider>
+          <mat-divider *ngIf="!last"></mat-divider>
         </mat-list-item>
       </mat-list>
     </div>
+
+    <!-- Global actions display-->
+    <mat-accordion class="custom-headers-align">
+      <mat-expansion-panel hideToggle *ngIf="todos.length !== 0">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Toolbox
+          </mat-panel-title>
+          <mat-panel-description>
+            Global Actions for todolist
+            <mat-icon>build</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-list>
+          <mat-list-item>
+            <button mat-button color="primary" (click)="toggleAllTodos()">
+              <mat-icon>check</mat-icon>
+            </button>
+            <span>Mark all todos as done</span>
+
+          </mat-list-item>
+          <mat-list-item>
+            <button mat-button color="primary" (click)="deleteAllTodos()">
+              <mat-icon>delete</mat-icon>
+            </button>
+            <span>Clear todo list (Delete all todos)</span>
+          </mat-list-item>
+        </mat-list>
+
+      </mat-expansion-panel>
+    </mat-accordion>
   </div>
 </div>

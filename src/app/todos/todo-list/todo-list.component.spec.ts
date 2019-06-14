@@ -4,7 +4,13 @@ import {Store, StoreModule} from '@ngrx/store';
 import * as fromRoot from '../../store/reducers';
 import {TodoState} from '../../store/reducers/todo.reducer';
 import * as fromActions from '../../store/actions/todo.actions';
-import {MatCheckboxModule, MatDialogModule, MatDividerModule, MatIconModule, MatListModule} from '@angular/material';
+import {
+  MatCheckboxModule,
+  MatDialogModule,
+  MatDividerModule,
+  MatIconModule,
+  MatListModule
+} from '@angular/material';
 import {Todo} from '../../model/todo';
 import {Update} from '@ngrx/entity';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -12,6 +18,8 @@ import {CommonModule} from '@angular/common';
 import {BrowserModule} from '@angular/platform-browser';
 import {TodoDetailComponent} from '../todo-detail/todo-detail.component';
 import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {TodoDeleteComponent} from '../todo-delete/todo-delete.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('TodoListComponent', () => {
 
@@ -23,6 +31,7 @@ describe('TodoListComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         CommonModule,
         MatCheckboxModule,
         MatDialogModule,
@@ -37,7 +46,8 @@ describe('TodoListComponent', () => {
       ],
       declarations: [
         TodoListComponent,
-        TodoDetailComponent
+        TodoDetailComponent,
+        TodoDeleteComponent
       ],
       schemas: [NO_ERRORS_SCHEMA]
     });
@@ -56,16 +66,13 @@ describe('TodoListComponent', () => {
   });
 
   it('should dispatch an action to load todos when created', () => {
-    const action = new fromActions.LoadAllTodos();
-
-    expect(store.dispatch).toHaveBeenCalledWith(action);
+    expect(store.dispatch).toHaveBeenCalledWith(new fromActions.LoadAllTodos());
   });
 
   it('should display a list of todos after data is loaded - LoadAllTodosSuccess', () => {
     const items: Todo[] = [{id: 1, done: false, title: 'firstTodo'}, {id: 2, done: true, title: 'SecondTodo'}];
-    const action = new fromActions.LoadAllTodosSuccess(items);
 
-    store.dispatch(action);
+    store.dispatch(new fromActions.LoadAllTodosSuccess(items));
 
     component.allTodos$.subscribe(todos => {
       expect(todos.length).toBe(items.length);
@@ -80,21 +87,38 @@ describe('TodoListComponent', () => {
       id: initTodo.id,
       changes: { done: !initTodo.done }
     };
-    const action = new fromActions.ToggleCompleteTodo(updatedTodoState);
 
     component.onToggleTodo(initTodo);
 
-    expect(store.dispatch).toHaveBeenCalledWith(action);
+    expect(store.dispatch).toHaveBeenCalledWith(new fromActions.ToggleCompleteTodo(updatedTodoState));
   });
 
   it('should dispatch the add todo action when addTodo is called - addTodo', () => {
-    const todo: Todo = {id: 1, done: false, title: 'firstTodo'};
-    const action = new fromActions.AddTodo(todo);
-
-    store.dispatch(action);
+    const todo: Todo = {id: 1, done: false, title: 'firstTodo', description: 'firstDescription'};
 
     component.addTodo(todo.title, todo.description);
-    expect(store.dispatch).toHaveBeenCalledWith(action);
+
+    store.dispatch(new fromActions.AddTodo(todo));
+    expect(store.dispatch).toHaveBeenCalledWith(new fromActions.AddTodo(todo));
+  });
+
+  it('should dispatch the toggleAllTodos action when clicked - toggleAllTodos', () => {
+    const updatedTodoList: Update<Todo>[] = [
+      {id: 1, changes: {done: true}},
+      {id: 2, changes: {done: true}}
+    ];
+
+    component.toggleAllTodos();
+    store.dispatch(new fromActions.ToggleCompleteAllTodos(updatedTodoList));
+
+    expect(store.dispatch).toHaveBeenCalledWith(new fromActions.ToggleCompleteAllTodos(updatedTodoList));
+  });
+
+  it('should dispatch the deleteAllTodos action when clicked', () => {
+    component.deleteAllTodos();
+    store.dispatch(new fromActions.DeleteAllTodo());
+
+    expect(store.dispatch).toHaveBeenCalledWith(new fromActions.DeleteAllTodo());
   });
 
 });

@@ -58,6 +58,10 @@ export function reducer(state = initialState, action: fromActions.TodoActions) {
       return adapter.updateOne(action.todo, state);
     }
 
+    case fromActions.TodoActionTypes.ToggleCompleteAllTodos: {
+      return adapter.updateMany(action.todoList, state);
+    }
+
     case fromActions.TodoActionTypes.LoadTodoById: {
       return { ...state, selectedTodoId: action.todoId };
     }
@@ -72,6 +76,10 @@ export function reducer(state = initialState, action: fromActions.TodoActions) {
 
     case fromActions.TodoActionTypes.DeleteTodo: {
       return adapter.removeOne(action.todo.id, state);
+    }
+
+    case fromActions.TodoActionTypes.DeleteAllTodo: {
+      return adapter.removeAll({...state, selectedTodoId: null });
     }
 
     default: {

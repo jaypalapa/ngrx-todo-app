@@ -14,6 +14,9 @@ export class TodoDeleteComponent  {
               @Inject(MAT_DIALOG_DATA) public data) {
   }
 
+  /**
+   * Delete the todo by calling its corresponding action with given todo object in dialog
+   */
   delete(): void {
     this.store.dispatch(new fromActions.DeleteTodo(this.data.todo));
   }

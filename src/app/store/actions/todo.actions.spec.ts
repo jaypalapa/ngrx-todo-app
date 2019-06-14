@@ -1,10 +1,10 @@
 import * as fromActions from '../actions/todo.actions';
 import {
-  AddTodo, DeleteTodo,
+  AddTodo, DeleteAllTodo, DeleteTodo,
   LoadAllTodos,
   LoadAllTodosFail,
   LoadAllTodosSuccess,
-  LoadTodoById,
+  LoadTodoById, ToggleCompleteAllTodos,
   ToggleCompleteTodo,
   UpdateTodo
 } from '../actions/todo.actions';
@@ -64,14 +64,28 @@ describe('Actions Full Tests', () => {
     });
   });
 
+  describe('ToggleCompleteAllTodos', () => {
+    it('should create an action', () => {
+      const updatedTodoList: Update<Todo>[] = [
+        { id: 1, changes: { done : true }},
+        { id: 1, changes: { done : true }},
+        ];
+      const action = new ToggleCompleteAllTodos(updatedTodoList);
+
+      expect({...action}).toEqual({
+        type: fromActions.TodoActionTypes.ToggleCompleteAllTodos,
+        todoList: updatedTodoList,
+      });
+    });
+  });
+
   describe('LoadTodoById', () => {
     it('should create an action', () => {
-      const payload: Todo = {id: 1, done: true, title: 'fake Todo 1', description: 'fake description 1'};
       const action = new LoadTodoById(1);
 
       expect({...action}).toEqual({
         type: fromActions.TodoActionTypes.LoadTodoById,
-        todoId: payload.id,
+        todoId: 1,
       });
     });
   });
@@ -108,6 +122,16 @@ describe('Actions Full Tests', () => {
       expect({...action}).toEqual({
         type: fromActions.TodoActionTypes.DeleteTodo,
         todo: deletedTodo,
+      });
+    });
+  });
+
+  describe('DeleteAllTodo', () => {
+    it('should create an action', () => {
+      const action = new DeleteAllTodo();
+
+      expect({...action}).toEqual({
+        type: fromActions.TodoActionTypes.DeleteAllTodo,
       });
     });
   });

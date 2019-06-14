@@ -37,6 +37,7 @@ describe('Todo-List Service', () => {
     service.getAllTodos().subscribe(todos => {
       expect(todos.length).toBe(2);
       expect(todos).toEqual(fakeTodos);
+      expect(todos[0].done).toEqual(true);
     });
 
     // Mock request

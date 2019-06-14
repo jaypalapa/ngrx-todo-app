@@ -19,7 +19,7 @@ import {
   MatDividerModule,
   MatExpansionModule, MatFormFieldModule,
   MatIconModule, MatInputModule,
-  MatListModule, MatSnackBarModule
+  MatListModule, MatProgressSpinnerModule, MatSnackBarModule, MatToolbarModule
 } from '@angular/material';
 import {InMemoryWebApiModule} from 'angular-in-memory-web-api';
 import {reducers} from './store/reducers';
@@ -55,6 +55,8 @@ import { TodoDeleteComponent } from './todos/todo-delete/todo-delete.component';
     MatDividerModule,
     MatListModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
+    MatToolbarModule,
     ReactiveFormsModule,
     InMemoryWebApiModule.forRoot(InMemoryMock),
     StoreModule.forRoot(reducers),
