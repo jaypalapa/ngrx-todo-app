@@ -62,7 +62,13 @@ export class TodoEditComponent implements OnInit {
    * @param description: Details about the todo
    */
   onSubmit(): void {
-    let updatedTodo: Update<Todo>;
+    let updatedTodo: Update<Todo> = {
+      id: this.selectedTodo.id,
+      changes: {
+        title: this.todoForm.controls.title.value,
+        description: undefined
+      }
+    };
 
     // Check if user has filled in the description field
     // If so, build an Update To-do typed object with changes applied on title AND description
@@ -72,15 +78,6 @@ export class TodoEditComponent implements OnInit {
         changes: {
           title: this.todoForm.controls.title.value,
           description: this.todoForm.controls.description.value
-        }
-      };
-    } else {
-      // If not, build the Update To-do object with the updated title
-      updatedTodo = {
-        id: this.selectedTodo.id,
-        changes: {
-          title: this.todoForm.controls.title.value,
-          description: undefined
         }
       };
     }

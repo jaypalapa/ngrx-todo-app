@@ -1,7 +1,7 @@
 <div class="main-container">
   <div class="todo-list-container" *ngIf="allTodos$ | async as todos">
     <!-- FORM for New to-do creation -->
-      <div class="" [formGroup]="newTodoForm">
+      <form #formDirective="ngForm" [formGroup]="newTodoForm" (ngSubmit)="addTodo(formDirective, title.value, description.value)">
         <mat-list>
           <mat-list-item>
             <mat-form-field>
@@ -15,13 +15,12 @@
             </mat-form-field>
 
             <button mat-mini-fab color="primary" type="submit"
-                    (click)="addTodo(title.value, description.value); newTodoForm.reset()"
                     [disabled]="newTodoForm.invalid">
               <mat-icon>add</mat-icon>
             </button>
           </mat-list-item>
         </mat-list>
-      </div>
+      </form>
 
     <!-- Display the complete todolist -->
     <div class="todo-item" *ngIf="allTodos$ | async as todos">

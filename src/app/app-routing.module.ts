@@ -4,6 +4,7 @@ import {TodoListComponent} from './todos/todo-list/todo-list.component';
 import {TodoDetailComponent} from './todos/todo-detail/todo-detail.component';
 import {TodosGuard} from './todos/todos.guard';
 import {TodoEditComponent} from './todos/todo-edit/todo-edit.component';
+import {ForbiddenPageComponent} from './containers/forbidden-page';
 
 const routes: Routes = [
   {
@@ -24,6 +25,10 @@ const routes: Routes = [
     path: 'todoEdit/:id',
     component: TodoEditComponent,
     canActivate: [TodosGuard]
+  },
+  {
+    path: 'forbidden',
+    component: ForbiddenPageComponent,
   }
 ];
 

@@ -5,7 +5,7 @@ import {ActivatedRouteSnapshot, CanActivate, Router} from '@angular/router';
 import {Observable, of} from 'rxjs';
 import * as fromReducer from '../store/reducers';
 import * as fromActions from '../store/actions/todo.actions';
-import {catchError, map, switchMap, take, tap} from 'rxjs/operators';
+import {map, switchMap, take, tap} from 'rxjs/operators';
 import {TodoService} from '../service/todo.service';
 
 @Injectable()
@@ -25,6 +25,7 @@ export class TodosGuard implements CanActivate {
       map(entities => !!entities[id]),
       take(1)
     );
+
   }
 
   /**
@@ -34,11 +35,13 @@ export class TodosGuard implements CanActivate {
   hasTodoInApi(id: number): Observable<boolean> {
     return this.todoService.getAllTodos().pipe(
       map(todos => new fromActions.LoadAllTodosSuccess(todos)),
-      tap(action => this.store.dispatch(action)),
-      map(todo => !!todo),
-      catchError(() => {
-        return of(false);
-      })
+      tap(loadAllTodosAction => this.store.dispatch(loadAllTodosAction)),
+      map(action => {
+        if (!action.todos[id]) {
+          this.router.navigate(['/forbidden']);
+        }
+        return !!action.todos[id];
+      }),
     );
   }
 
@@ -69,5 +72,7 @@ export class TodosGuard implements CanActivate {
     }
 
     return result;
+
   }
+
 }

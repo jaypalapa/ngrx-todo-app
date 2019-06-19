@@ -8,7 +8,7 @@ import {TodoState} from '../../store/reducers/todo.reducer';
 import {selectAllTodos} from '../../store/reducers';
 import {Update} from '@ngrx/entity';
 import {take} from 'rxjs/operators';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
 import {AddTodo} from '../../store/actions/todo.actions';
 import {MatDialog} from '@angular/material';
 import {TodoDeleteComponent} from '../todo-delete/todo-delete.component';
@@ -99,8 +99,9 @@ export class TodoListComponent implements OnInit {
    * This method creates a Todo Object with the input values from form and dispatch the corresponding action
    * @param title: Title of the todo
    * @param description: Some details about the todo (optional)
+   * @param formDirective: Use to reset properly fields after submit of a new todo
    */
-  addTodo(title: string, description?: string): void {
+  addTodo(formDirective: FormGroupDirective, title: string, description?: string): void {
   title = title.trim();
   if (description) { description = description.trim(); }
 
@@ -112,6 +113,9 @@ export class TodoListComponent implements OnInit {
   };
 
   this.store.dispatch(new AddTodo(todo));
+
+  // Reset fields after submitting new todo
+  formDirective.resetForm();
   }
 
   /**
@@ -134,6 +138,5 @@ export class TodoListComponent implements OnInit {
       this.store.dispatch(new fromActions.DeleteAllTodo());
     }
   }
-
 
 }

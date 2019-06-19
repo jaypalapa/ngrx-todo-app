@@ -28,10 +28,12 @@ import {TodoDetailComponent} from './todos/todo-detail/todo-detail.component';
 import {TodosGuard} from './todos/todos.guard';
 import { TodoEditComponent } from './todos/todo-edit/todo-edit.component';
 import { TodoDeleteComponent } from './todos/todo-delete/todo-delete.component';
+import {ForbiddenPageComponent} from './containers/forbidden-page';
 
 @NgModule({
   declarations: [
     AppComponent,
+    ForbiddenPageComponent,
     TodoListComponent,
     TodoDetailComponent,
     TodoEditComponent,
