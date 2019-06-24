@@ -9,7 +9,7 @@ import {selectAllTodos} from '../../store/reducers';
 import {Update} from '@ngrx/entity';
 import {take} from 'rxjs/operators';
 import {FormBuilder, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {TodoDeleteComponent} from '../todo-delete/todo-delete.component';
 
 @Component({

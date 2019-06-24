@@ -4,13 +4,11 @@ import {Store, StoreModule} from '@ngrx/store';
 import * as fromRoot from '../../store/reducers';
 import {TodoState} from '../../store/reducers/todo.reducer';
 import * as fromActions from '../../store/actions/todo.actions';
-import {
-  MatCheckboxModule,
-  MatDialogModule,
-  MatDividerModule,
-  MatIconModule,
-  MatListModule
-} from '@angular/material';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 import {Todo} from '../../model/todo';
 import {Update} from '@ngrx/entity';
 import {FormControl, FormGroup, FormGroupDirective, FormsModule, ReactiveFormsModule} from '@angular/forms';

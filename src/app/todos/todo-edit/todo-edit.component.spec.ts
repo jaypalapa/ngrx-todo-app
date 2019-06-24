@@ -2,14 +2,13 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import { TodoEditComponent } from './todo-edit.component';
 import {ReactiveFormsModule} from '@angular/forms';
-import {
-  MatCheckboxModule,
-  MatExpansionModule,
-  MatFormFieldModule,
-  MatIconModule, MatInputModule,
-  MatListModule,
-  MatSnackBarModule
-} from '@angular/material';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {AppRoutingModule} from '../../app-routing.module';
 import {TodoListComponent} from '../todo-list/todo-list.component';
 import {TodoDetailComponent} from '../todo-detail/todo-detail.component';

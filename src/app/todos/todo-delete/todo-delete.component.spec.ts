@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TodoDeleteComponent } from './todo-delete.component';
-import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import {Store, StoreModule} from '@ngrx/store';
 import * as fromRoot from '../../store/reducers';
 import {Todo} from '../../model/todo';

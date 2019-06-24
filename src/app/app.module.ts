@@ -12,15 +12,19 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {AppRoutingModule} from './app-routing.module';
 import {HttpClientModule} from '@angular/common/http';
 import {InMemoryMock} from './mock/in-memory-mock';
-import {
-  MatButtonModule,
-  MatCardModule,
-  MatCheckboxModule, MatDialogModule,
-  MatDividerModule,
-  MatExpansionModule, MatFormFieldModule,
-  MatIconModule, MatInputModule,
-  MatListModule, MatProgressSpinnerModule, MatSnackBarModule, MatToolbarModule
-} from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import {InMemoryWebApiModule} from 'angular-in-memory-web-api';
 import {reducers} from './store/reducers';
 import {TodoEffects} from './store/effects/todo.effects';

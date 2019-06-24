@@ -8,7 +8,7 @@ import * as fromActions from '../../store/actions/todo.actions';
 import * as fromReducer from '../../store/reducers';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Update} from '@ngrx/entity';
-import {MatSnackBar} from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-todo-edit',
