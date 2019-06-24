@@ -22,6 +22,8 @@ export class TodoDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(new fromActions.LoadTodoById(+this.route.snapshot.paramMap.get('id')));
+    const todoId: number = +this.route.snapshot.paramMap.get('id');
+
+    this.store.dispatch(fromActions.loadTodoById({todoId} ));
   }
 }

@@ -9,7 +9,6 @@ import {selectAllTodos} from '../../store/reducers';
 import {Update} from '@ngrx/entity';
 import {take} from 'rxjs/operators';
 import {FormBuilder, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
-import {AddTodo} from '../../store/actions/todo.actions';
 import {MatDialog} from '@angular/material';
 import {TodoDeleteComponent} from '../todo-delete/todo-delete.component';
 
@@ -55,7 +54,7 @@ export class TodoListComponent implements OnInit {
       select(fromReducer.selectLoadedTodos),
       take(1))
       .subscribe((hasLoaded: boolean) => {
-        if (!hasLoaded) { this.store.dispatch(new fromActions.LoadAllTodos()); }
+        if (!hasLoaded) { this.store.dispatch(fromActions.loadAllTodos()); }
         }
       );
   }
@@ -66,23 +65,23 @@ export class TodoListComponent implements OnInit {
    * @param todo: Todo object to toggle
    */
   onToggleTodo(todo: Todo): void {
-    const todoUpdate: Update<Todo> = {
+    const todoToToggle: Update<Todo> = {
       id: todo.id,
       changes: { done: !todo.done }
     };
 
-    this.store.dispatch(new fromActions.ToggleCompleteTodo(todoUpdate));
+    this.store.dispatch(fromActions.toggleCompleteTodo({ todoToToggle }));
   }
 
   /**
    * Method allowing to mark all todos as done with a single click
    */
   toggleAllTodos(): void {
-    let todosUpdated: Update<Todo>[];
+    let todosToToggle: Update<Todo>[];
 
     // Set todosUpdated by changing the done property (to true) to each todo emitted by source observable
     this.allTodos$.pipe(take(1)).subscribe(todos => {
-      todosUpdated = todos.map(todo => {
+      todosToToggle = todos.map(todo => {
         return {
           id: todo.id,
           changes: {
@@ -92,7 +91,7 @@ export class TodoListComponent implements OnInit {
       });
     });
 
-    this.store.dispatch(new fromActions.ToggleCompleteAllTodos(todosUpdated));
+    this.store.dispatch(fromActions.toggleCompleteAllTodos({ todosToToggle }));
   }
 
   /**
@@ -101,18 +100,18 @@ export class TodoListComponent implements OnInit {
    * @param description: Some details about the todo (optional)
    * @param formDirective: Use to reset properly fields after submit of a new todo
    */
-  addTodo(formDirective: FormGroupDirective, title: string, description?: string): void {
+  addTodo(title: string, description?: string, formDirective?: FormGroupDirective): void {
   title = title.trim();
   if (description) { description = description.trim(); }
 
-  const todo: Todo = {
+  const todoToAdd: Todo = {
     id: new Date().valueOf(),
     done: false,
     title,
     description
   };
 
-  this.store.dispatch(new AddTodo(todo));
+  this.store.dispatch(fromActions.addTodo({ todoToAdd }));
 
   // Reset fields after submitting new todo
   formDirective.resetForm();
@@ -135,7 +134,7 @@ export class TodoListComponent implements OnInit {
    */
   deleteAllTodos(): void {
     if (confirm('This action will remove all your todos, are you sure ?')) {
-      this.store.dispatch(new fromActions.DeleteAllTodo());
+      this.store.dispatch(fromActions.deleteAllTodos());
     }
   }
 

@@ -12,6 +12,7 @@ import {TodoDetailComponent} from '../todo-detail/todo-detail.component';
 import {NO_ERRORS_SCHEMA} from '@angular/core';
 import {AppRoutingModule} from '../../app-routing.module';
 import {TodoEditComponent} from '../todo-edit/todo-edit.component';
+import {ForbiddenPageComponent} from '../../containers/forbidden-page';
 
 describe('TodoDetailComponent', () => {
 
@@ -36,6 +37,7 @@ describe('TodoDetailComponent', () => {
         })
       ],
       declarations: [
+        ForbiddenPageComponent,
         TodoListComponent,
         TodoEditComponent,
         TodoDetailComponent
@@ -57,7 +59,8 @@ describe('TodoDetailComponent', () => {
   });
 
   it('should dispatch an action to load a todo with a given id', () => {
-    const action = new fromActions.LoadTodoById(0);
+    const todoId = 0;
+    const action = fromActions.loadTodoById({todoId});
 
     expect(store.dispatch).toHaveBeenCalledWith(action);
   });

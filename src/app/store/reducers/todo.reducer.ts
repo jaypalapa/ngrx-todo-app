@@ -1,6 +1,7 @@
 import * as fromActions from '../actions/todo.actions';
 import {createEntityAdapter, EntityAdapter, EntityState} from '@ngrx/entity';
 import {Todo} from '../../model/todo';
+import {Action, createReducer, on} from '@ngrx/store';
 
 // Create the state for To do Entity
 export interface TodoState extends EntityState<Todo> {
@@ -27,65 +28,40 @@ export const initialState: TodoState = adapter.getInitialState({
   selectedTodoId: null
 });
 
-// REDUCER
-export function reducer(state = initialState, action: fromActions.TodoActions) {
-  switch (action.type) {
+export const featureReducer = createReducer(
+  initialState,
+  on(fromActions.loadAllTodos, state => ({ ...state, loading: true })),
+  on(fromActions.loadAllTodosSuccess, (state, { todos }) => {
+    return adapter.addAll(todos, {
+      ...state,
+      loading: false,
+      loaded: true,
+    });
+  }),
+  on(fromActions.loadAllTodosFail, state => ({ ...state, loading: false, loaded: false })),
+  on(fromActions.toggleCompleteTodo, (state, { todoToToggle }) => {
+    return adapter.updateOne(todoToToggle, state);
+  }),
+  on(fromActions.toggleCompleteAllTodos, (state, { todosToToggle }) => {
+    return adapter.updateMany(todosToToggle, state);
+  }),
+  on(fromActions.loadTodoById, (state, { todoId }) => ({ ...state, selectedTodoId: todoId })),
+  on(fromActions.addTodo, (state, { todoToAdd }) => {
+    return adapter.addOne(todoToAdd, state);
+  }),
+  on(fromActions.updateTodo, (state, { todoToUpdate }) => {
+    return adapter.updateOne(todoToUpdate, state);
+  }),
+  on(fromActions.deleteTodo, (state, { todoToDelete }) => {
+    return adapter.removeOne(todoToDelete.id, state);
+  }),
+  on(fromActions.deleteAllTodos, (state) => {
+    return adapter.removeAll({...state, selectedTodoId: null});
+  }),
+);
 
-    case fromActions.TodoActionTypes.LoadAllTodos: {
-      return ({
-        ...state,
-        loading: true
-      });
-    }
-
-    case fromActions.TodoActionTypes.LoadAllTodosSuccess: {
-      return adapter.addAll(action.todos, {
-        ...state,
-        loading: false,
-        loaded: true
-      });
-    }
-
-    case fromActions.TodoActionTypes.LoadAllTodosFail: {
-      return {
-        ...state,
-        loading: false,
-        loaded: false
-      };
-    }
-
-    case fromActions.TodoActionTypes.ToggleCompleteTodo: {
-      return adapter.updateOne(action.todo, state);
-    }
-
-    case fromActions.TodoActionTypes.ToggleCompleteAllTodos: {
-      return adapter.updateMany(action.todoList, state);
-    }
-
-    case fromActions.TodoActionTypes.LoadTodoById: {
-      return { ...state, selectedTodoId: action.todoId };
-    }
-
-    case fromActions.TodoActionTypes.AddTodo: {
-      return adapter.addOne(action.todo, state);
-    }
-
-    case fromActions.TodoActionTypes.UpdateTodo: {
-      return adapter.updateOne(action.todo, state);
-    }
-
-    case fromActions.TodoActionTypes.DeleteTodo: {
-      return adapter.removeOne(action.todo.id, state);
-    }
-
-    case fromActions.TodoActionTypes.DeleteAllTodo: {
-      return adapter.removeAll({...state, selectedTodoId: null });
-    }
-
-    default: {
-      return state;
-    }
-  }
+export function reducer(state: TodoState | undefined, action: Action) {
+  return featureReducer(state, action);
 }
 
 export const getSelectedTodoId = (state: TodoState) => state.selectedTodoId;

@@ -13,12 +13,12 @@ describe('TodoDeleteComponent', () => {
   let fixture: ComponentFixture<TodoDeleteComponent>;
   let store: Store<TodoState>;
 
-  const mockedTodo: Todo = {
+  const todoToDelete: Todo = {
     id: 123,
     title: 'title 1',
     description: 'description 1',
     done: false
-  }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -43,7 +43,7 @@ describe('TodoDeleteComponent', () => {
 
     fixture = TestBed.createComponent(TodoDeleteComponent);
     component = fixture.componentInstance;
-    component.data.todo = mockedTodo;
+    component.data.todo = todoToDelete;
     fixture.detectChanges();
   });
 
@@ -53,6 +53,6 @@ describe('TodoDeleteComponent', () => {
 
   it('should dispatch the Delete Todo action', () => {
     component.delete();
-    expect(store.dispatch).toHaveBeenCalledWith(new fromActions.DeleteTodo(mockedTodo));
+    expect(store.dispatch).toHaveBeenCalledWith(fromActions.deleteTodo({todoToDelete}));
   });
 });

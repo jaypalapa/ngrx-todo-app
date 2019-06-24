@@ -13,19 +13,23 @@ import {
 } from '@angular/material';
 import {Todo} from '../../model/todo';
 import {Update} from '@ngrx/entity';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormControl, FormGroup, FormGroupDirective, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
-import {BrowserModule} from '@angular/platform-browser';
+import {BrowserModule, By} from '@angular/platform-browser';
 import {TodoDetailComponent} from '../todo-detail/todo-detail.component';
-import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {DebugElement, NO_ERRORS_SCHEMA} from '@angular/core';
 import {TodoDeleteComponent} from '../todo-delete/todo-delete.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ForbiddenPageComponent} from '../../containers/forbidden-page';
 
 describe('TodoListComponent', () => {
 
   let component: TodoListComponent;
   let fixture: ComponentFixture<TodoListComponent>;
   let store: Store<TodoState>;
+  let debugEl: DebugElement;
+  let htmlEl: HTMLElement;
+  let addBtn: DebugElement;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -45,6 +49,7 @@ describe('TodoListComponent', () => {
         })
       ],
       declarations: [
+        ForbiddenPageComponent,
         TodoListComponent,
         TodoDetailComponent,
         TodoDeleteComponent
@@ -59,6 +64,9 @@ describe('TodoListComponent', () => {
     fixture = TestBed.createComponent(TodoListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    debugEl = fixture.debugElement.query(By.css('form'));
+    htmlEl = debugEl.nativeElement;
+    addBtn = fixture.debugElement.query(By.css('input[type=submit]'));
   });
 
   it('should be created', () => {
@@ -66,16 +74,16 @@ describe('TodoListComponent', () => {
   });
 
   it('should dispatch an action to load todos when created', () => {
-    expect(store.dispatch).toHaveBeenCalledWith(new fromActions.LoadAllTodos());
+    expect(store.dispatch).toHaveBeenCalledWith(fromActions.loadAllTodos());
   });
 
   it('should display a list of todos after data is loaded - LoadAllTodosSuccess', () => {
-    const items: Todo[] = [{id: 1, done: false, title: 'firstTodo'}, {id: 2, done: true, title: 'SecondTodo'}];
+    const todos: Todo[] = [{id: 1, done: false, title: 'firstTodo'}, {id: 2, done: true, title: 'SecondTodo'}];
 
-    store.dispatch(new fromActions.LoadAllTodosSuccess(items));
+    store.dispatch(fromActions.loadAllTodosSuccess({todos}));
 
-    component.allTodos$.subscribe(todos => {
-      expect(todos.length).toBe(items.length);
+    component.allTodos$.subscribe(todoList => {
+      expect(todoList.length).toBe(todos.length);
     });
   });
 
@@ -83,42 +91,77 @@ describe('TodoListComponent', () => {
     // Fake initialized to do with false state
     const initTodo: Todo = {id: 1, done: false, title: 'firstTodo'};
     // Update to do state with a true state and create an Update To do typed object
-    const updatedTodoState: Update<Todo> = {
+    const todoToToggle: Update<Todo> = {
       id: initTodo.id,
       changes: { done: !initTodo.done }
     };
 
     component.onToggleTodo(initTodo);
 
-    expect(store.dispatch).toHaveBeenCalledWith(new fromActions.ToggleCompleteTodo(updatedTodoState));
+    expect(store.dispatch).toHaveBeenCalledWith(fromActions.toggleCompleteTodo({todoToToggle}));
   });
 
   it('should dispatch the add todo action when addTodo is called - addTodo', () => {
-    const todo: Todo = {id: 1, done: false, title: 'firstTodo', description: 'firstDescription'};
+    const todoToAdd: Todo = {id: 1, done: false, title: 'firstTodo', description: 'firstDescription'};
+    // Mock the formGroup in order to set the form property with the FormGroupDirective
+    const formGroup: FormGroup = new FormGroup({
+      title: new FormControl(''),
+      description: new FormControl('')
+    });
+    const formGroupDirective: FormGroupDirective = new FormGroupDirective([], []);
+    formGroupDirective.form = formGroup;
 
-    component.addTodo(todo.title, todo.description);
+    component.addTodo(todoToAdd.title, todoToAdd.description, formGroupDirective);
 
-    store.dispatch(new fromActions.AddTodo(todo));
-    expect(store.dispatch).toHaveBeenCalledWith(new fromActions.AddTodo(todo));
+    store.dispatch(fromActions.addTodo({todoToAdd}));
+    expect(store.dispatch).toHaveBeenCalledWith(fromActions.addTodo({todoToAdd}));
   });
 
   it('should dispatch the toggleAllTodos action when clicked - toggleAllTodos', () => {
-    const updatedTodoList: Update<Todo>[] = [
+    const todosToToggle: Update<Todo>[] = [
       {id: 1, changes: {done: true}},
       {id: 2, changes: {done: true}}
     ];
 
     component.toggleAllTodos();
-    store.dispatch(new fromActions.ToggleCompleteAllTodos(updatedTodoList));
+    store.dispatch(fromActions.toggleCompleteAllTodos({todosToToggle}));
 
-    expect(store.dispatch).toHaveBeenCalledWith(new fromActions.ToggleCompleteAllTodos(updatedTodoList));
+    expect(store.dispatch).toHaveBeenCalledWith(fromActions.toggleCompleteAllTodos({todosToToggle}));
   });
 
   it('should dispatch the deleteAllTodos action when clicked', () => {
     component.deleteAllTodos();
-    store.dispatch(new fromActions.DeleteAllTodo());
+    store.dispatch(fromActions.deleteAllTodos());
 
-    expect(store.dispatch).toHaveBeenCalledWith(new fromActions.DeleteAllTodo());
+    expect(store.dispatch).toHaveBeenCalledWith(fromActions.deleteAllTodos());
+  });
+
+  describe('Form HTML Tests', () => {
+    it('should call the addTodo method on click', () => {
+      spyOn(component, 'addTodo');
+      htmlEl = fixture.debugElement.query(By.css('button')).nativeElement;
+      htmlEl.click();
+
+      expect(component.addTodo).toHaveBeenCalledTimes(0);
+    });
+
+    it('should check initial input and form to be invalid', () => {
+      expect(component.newTodoForm.controls.title.value).toBe('');
+      expect(component.newTodoForm.controls.description.value).toBe('');
+      expect(component.newTodoForm.valid).toBeFalsy();
+    });
+
+    it('should be a valid form', () => {
+      component.newTodoForm.controls.title.setValue('Fake Title');
+      expect(component.newTodoForm.valid).toBeTruthy();
+    });
+
+    it('should check that add button is disabled initially', ()  => {
+      fixture.whenStable().then(() => {
+        expect(addBtn.nativeElement.disabled).toBe(true);
+      }).catch(() => 'error');
+    });
+
   });
 
 });

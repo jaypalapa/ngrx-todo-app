@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Actions, Effect, ofType} from '@ngrx/effects';
-import {Observable, of} from 'rxjs';
-import {Action} from '@ngrx/store';
+import {Actions, createEffect, Effect, ofType} from '@ngrx/effects';
+import {of} from 'rxjs';
 import {TodoService} from '../../service/todo.service';
 import * as fromActions from '../actions/todo.actions';
 import {catchError, map, switchMap} from 'rxjs/operators';
@@ -14,13 +13,16 @@ export class TodoEffects {
               private todoService: TodoService) {}
 
   @Effect()
-  loadAllTodos$: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.TodoActionTypes.LoadAllTodos),
-    switchMap(() => this.todoService.getAllTodos().pipe(
-      map((todos: Todo[]) => new fromActions.LoadAllTodosSuccess(todos)),
-      catchError((err) => of(new fromActions.LoadAllTodosFail(err)))
+  loadAllTodos$ = createEffect(() => this.actions$.pipe(
+    ofType(fromActions.loadAllTodos),
+    switchMap(() =>
+    this.todoService
+      .getAllTodos()
+      .pipe(
+        map((todos: Todo[]) => fromActions.loadAllTodosSuccess({todos})),
+        catchError((err) => of(fromActions.loadAllTodosFail(err)))
       )
     )
-  );
+  ));
 
 }

@@ -34,7 +34,7 @@ export class TodosGuard implements CanActivate {
    */
   hasTodoInApi(id: number): Observable<boolean> {
     return this.todoService.getAllTodos().pipe(
-      map(todos => new fromActions.LoadAllTodosSuccess(todos)),
+      map(todos => fromActions.loadAllTodosSuccess({todos})),
       tap(loadAllTodosAction => this.store.dispatch(loadAllTodosAction)),
       map(action => {
         if (!action.todos[id]) {

@@ -37,7 +37,9 @@ export class TodoEditComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(new fromActions.LoadTodoById(+this.route.snapshot.paramMap.get('id')));
+    const todoId: number = +this.route.snapshot.paramMap.get('id');
+
+    this.store.dispatch(fromActions.loadTodoById({todoId}));
 
     this.fillFormWithData();
   }
@@ -62,7 +64,7 @@ export class TodoEditComponent implements OnInit {
    * @param description: Details about the todo
    */
   onSubmit(): void {
-    let updatedTodo: Update<Todo> = {
+    let todoToUpdate: Update<Todo> = {
       id: this.selectedTodo.id,
       changes: {
         title: this.todoForm.controls.title.value,
@@ -73,7 +75,7 @@ export class TodoEditComponent implements OnInit {
     // Check if user has filled in the description field
     // If so, build an Update To-do typed object with changes applied on title AND description
     if (this.todoForm.controls.description.value) {
-      updatedTodo = {
+      todoToUpdate = {
         id: this.selectedTodo.id,
         changes: {
           title: this.todoForm.controls.title.value,
@@ -83,7 +85,7 @@ export class TodoEditComponent implements OnInit {
     }
 
     // Dispatch action to update the current to-do
-    this.store.dispatch(new fromActions.UpdateTodo(updatedTodo));
+    this.store.dispatch(fromActions.updateTodo({todoToUpdate}));
 
     // Redirect to todos list
     this.router.navigate(['/todos']);

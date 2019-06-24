@@ -22,6 +22,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {of} from 'rxjs';
 import {Todo} from '../../model/todo';
 import {Update} from '@ngrx/entity';
+import {ForbiddenPageComponent} from '../../containers/forbidden-page';
 
 describe('TodoEditComponent', () => {
   let component: TodoEditComponent;
@@ -31,6 +32,7 @@ describe('TodoEditComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
+        ForbiddenPageComponent,
         TodoEditComponent,
         TodoListComponent,
         TodoDetailComponent
@@ -78,7 +80,8 @@ describe('TodoEditComponent', () => {
   });
 
   it('should dispatch an action to load a todo with a given id', () => {
-    const action = new fromActions.LoadTodoById(0);
+    const todoId = 0;
+    const action = fromActions.loadTodoById({todoId});
     expect(store.dispatch).toHaveBeenCalledWith(action);
     fixture.destroy();
   });
@@ -99,7 +102,7 @@ describe('TodoEditComponent', () => {
     });
 
     // Build fake Update<To-do> object with fake input values above
-    const updatedTodo: Update<Todo> = {
+    const todoToUpdate: Update<Todo> = {
       id: component.selectedTodo.id,
       changes: {
         title: component.todoForm.controls.title.value,
@@ -108,7 +111,7 @@ describe('TodoEditComponent', () => {
     };
 
     component.onSubmit();
-    expect(store.dispatch).toHaveBeenCalledWith(new fromActions.UpdateTodo(updatedTodo));
+    expect(store.dispatch).toHaveBeenCalledWith(fromActions.updateTodo({todoToUpdate}));
   });
 
 });

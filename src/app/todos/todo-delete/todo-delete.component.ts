@@ -3,6 +3,7 @@ import {MAT_DIALOG_DATA} from '@angular/material';
 import {TodoState} from '../../store/reducers/todo.reducer';
 import * as fromActions from '../../store/actions/todo.actions';
 import {Store} from '@ngrx/store';
+import {Todo} from '../../model/todo';
 
 @Component({
   selector: 'app-todo-delete',
@@ -18,7 +19,8 @@ export class TodoDeleteComponent  {
    * Delete the todo by calling its corresponding action with given todo object in dialog
    */
   delete(): void {
-    this.store.dispatch(new fromActions.DeleteTodo(this.data.todo));
+    const todoToDelete: Todo = this.data.todo;
+    this.store.dispatch(fromActions.deleteTodo({todoToDelete}));
   }
 
 }
